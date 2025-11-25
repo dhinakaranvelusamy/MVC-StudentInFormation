@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Studentdata.Models.StudentInfo>
+@{
+    ViewData["Title"] = "Student List";
+}
+
+<h2>Students</h2>
+
+<form method="post" asp-action="Search">
+    <input type="text" name="name" placeholder="Search by Name" />
+    <button type="submit">Search</button>
+</form>
+
+<a asp-action="Create" class="btn btn-primary mb-2">Add New Student</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>State</th>
+            <th>Gender</th>
+            <th>DOB</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>@student.MobileNumber</td>
+                <td>@student.State</td>
+                <td>@student.Gender</td>
+                <td>@student.DateOfBirth.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@student.Id" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

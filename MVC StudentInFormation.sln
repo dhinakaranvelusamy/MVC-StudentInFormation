@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34114.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC StudentInFormation", "MVC StudentInFormation.csproj", "{2A5452CC-C633-43D5-BFED-81AB8C5B1C7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Student Access Layer", "Student Access Layer", "{A4D9A6F7-BE38-447E-B14F-9E7181EA1CCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Student Data", "..\Student Data\Student Data.csproj", "{39F556DC-4290-49B7-A585-AEF77AB7AA26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A5452CC-C633-43D5-BFED-81AB8C5B1C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A5452CC-C633-43D5-BFED-81AB8C5B1C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A5452CC-C633-43D5-BFED-81AB8C5B1C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A5452CC-C633-43D5-BFED-81AB8C5B1C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39F556DC-4290-49B7-A585-AEF77AB7AA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39F556DC-4290-49B7-A585-AEF77AB7AA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39F556DC-4290-49B7-A585-AEF77AB7AA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39F556DC-4290-49B7-A585-AEF77AB7AA26}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{39F556DC-4290-49B7-A585-AEF77AB7AA26} = {A4D9A6F7-BE38-447E-B14F-9E7181EA1CCC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB72B8B7-50AD-4B25-B734-18A0BF4E2E2F}
+	EndGlobalSection
+EndGlobal
