@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVC_StudentInFormation.Models;
-using System;
-using System.Collections.Generic;
+using StudentCRUD.Models;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVC_StudentInFormation.Controllers
 {

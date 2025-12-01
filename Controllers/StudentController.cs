@@ -1,115 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Studentdata.Repo;
-using Studentdata.Models;
-using System;
+using StudentCRUD.Models;
 using MVC_StudentInFormation.Models;
-using Studentdata.ErorrModels;
-using ErrorViewModel = Studentdata.ErorrModels.ErrorViewModel;
+using System;
 
 namespace StudentInformation.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly StudentRepository _repo;
+        private readonly IStudentRepository _repo;
 
-        
-
-        public StudentController(StudentRepository repo)
+        public StudentController(IStudentRepository repo)
         {
             _repo = repo;
         }
 
+        // LIST PAGE
         public IActionResult Index()
         {
             try
             {
-                var students = _repo.GetAllStudents();
-                return View(students);
+                var data = _repo.GetAllStudents();
+                return View(data);
             }
             catch (Exception ex)
             {
-                var errorModel = new ErrorViewModel
+                return View("Error", new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
                     RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
+                });
             }
-
         }
 
-        public IActionResult Create() => View();
+        // CREATE GET
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // CREATE POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(StudentInfo student)
+        public IActionResult Create(Student s)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _repo.AddStudent(student);
-                    return RedirectToAction(nameof(Index));
+                    int status = _repo.AddStudent(s);
+
+                    if (status == -1)
+                    {
+                        ModelState.AddModelError("", "Email or Mobile number already exists!");
+                        return View(s);
+                    }
+
+                    return RedirectToAction("Index");
                 }
-                return View(student);
+
+                return View(s);
             }
             catch (Exception ex)
             {
-                var errorModel = new ErrorViewModel
+                return View("Error", new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
                     RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
+                });
             }
         }
 
-
+        // EDIT GET
         public IActionResult Edit(int id)
-        {
-            try
-            {
-                var student = _repo.GetStudentById(id);
-                if (student == null) return NotFound();
-                return View(student);
-            }
-            catch (Exception ex)
-            {
-                var errorModel = new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
-            }
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(StudentInfo student)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _repo.UpdateStudent(student);
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(student);
-            }
-            catch (Exception ex)
-            {
-                var errorModel = new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
-            }
-
-        }
-        // GET: Delete Confirmation
-        public IActionResult Delete(int id)
         {
             try
             {
@@ -117,82 +80,85 @@ namespace StudentInformation.Controllers
                 if (student == null)
                     return NotFound();
 
-                return View(student); // Sends student info to the Delete view
-            }
-            catch (Exception ex)
-            {
-                var errorModel = new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
-            }
-
-        }
-
-        // POST: Delete Action
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            try
-            {
-                _repo.DeleteStudent(id); // Calls repository to delete
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                var errorModel = new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
-            }
-
-        }
-
-
-        public IActionResult Details(int id)
-        {
-            try
-            {
-                var student = _repo.GetStudentById(id);
-                if (student == null) return NotFound();
                 return View(student);
             }
             catch (Exception ex)
             {
-                var errorModel = new ErrorViewModel
+                return View("Error", new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
                     RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
+                });
             }
-
         }
 
+        // EDIT POST
         [HttpPost]
-        public IActionResult Search(string name)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Student s)
         {
             try
             {
-                var results = _repo.SearchStudentByName(name);
-                return View("Index", results);
+                if (ModelState.IsValid)
+                {
+                    int status = _repo.UpdateStudent(s);
+
+                    if (status == -1)
+                    {
+                        ModelState.AddModelError("", "Email or Mobile number already exists!");
+                        return View(s);
+                    }
+
+                    return RedirectToAction("Index");
+                }
+
+                return View(s);
             }
             catch (Exception ex)
             {
-                var errorModel = new ErrorViewModel
+                return View("Error", new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
                     RequestId = HttpContext.TraceIdentifier
-                };
-                return View("Error", errorModel);
+                });
             }
+        }
 
+        // DELETE GET
+        public IActionResult Delete(int id)
+        {
+            var student = _repo.GetStudentById(id);
+            if (student == null)
+                return NotFound();
 
+            return View(student);
+        }
+
+        // DELETE POST
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _repo.DeleteStudent(id);
+            return RedirectToAction("Index");
+        }
+
+        // DETAILS
+        public IActionResult Details(int id)
+        {
+            var student = _repo.GetStudentById(id);
+            if (student == null)
+                return NotFound();
+
+            return View(student);
+        }
+
+        // SEARCH
+        [HttpPost]
+        public IActionResult Search(string name)
+        {
+            var results = _repo.SearchStudentByName(name);
+            return View("Index", results);
         }
     }
 }

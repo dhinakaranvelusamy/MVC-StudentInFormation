@@ -1,34 +1,60 @@
-﻿@model Studentdata.Models.StudentInfo
+﻿@model StudentCRUD.Models.Student
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
 <h2>Edit Student</h2>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
-    <div asp-validation-summary="All" class="text-danger"></div>
 
-    <div>
-        <label>Name</label>
+    <div class="form-group">
+        <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <div>
-        <label>Email</label>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-    <div>
-        <label>Mobile Number</label>
+
+    <div class="form-group">
+        <label asp-for="MobileNumber"></label>
         <input asp-for="MobileNumber" class="form-control" />
+        <span asp-validation-for="MobileNumber" class="text-danger"></span>
     </div>
-    <div>
-        <label>State</label>
-        <input asp-for="State" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="State"></label>
+        <select asp-for="State" class="form-control" asp-items="@(new SelectList(ViewBag.States))">
+            <option value="">--Select State--</option>
+        </select>
+        <span asp-validation-for="State" class="text-danger"></span>
     </div>
-    <div>
-        <label>Gender</label>
-        <input type="radio" asp-for="Gender" value="Male" /> Male
-        <input type="radio" asp-for="Gender" value="Female" /> Female
+
+    <div class="form-group">
+        <label>Gender</label><br />
+        <input type="radio" asp-for="Gender" name="Gender" value="Male"
+               checked="@(Model.Gender == "Male")" /> Male
+        <input type="radio" asp-for="Gender" name="Gender" value="Female"
+               checked="@(Model.Gender == "Female")" /> Female
+        <input type="radio" asp-for="Gender" name="Gender" value="Other"
+               checked="@(Model.Gender == "Other")" /> Other
+        <span asp-validation-for="Gender" class="text-danger"></span>
     </div>
-    <div>
-        <label>Date of Birth</label>
-        <input asp-for="DateOfBirth" type="date" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="DateOfBirth"></label>
+        <input asp-for="DateOfBirth" class="form-control" type="date" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary mt-2">Update</button>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Studentdata.Repo; // <-- Make sure this namespace matches your repository
+using Studentdata.Repo;
 
 namespace MVC_StudentInFormation
 {
@@ -16,18 +16,14 @@ namespace MVC_StudentInFormation
 
         public IConfiguration Configuration { get; }
 
-        // Add services to the container.
+        // Register services
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add MVC controllers with views
             services.AddControllersWithViews();
-
-            // Register StudentRepository for Dependency Injection
-            // This will allow it to be injected into StudentController
-            services.AddScoped<StudentRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
         }
 
-        // Configure the HTTP request pipeline.
+        // Configure HTTP Request Pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
