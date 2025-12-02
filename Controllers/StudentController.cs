@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Studentdata.Repo;
 using StudentCRUD.Models;
-using MVC_StudentInFormation.Models;
+using StudentCRUD.Repo;
 using System;
 
-namespace StudentInformation.Controllers
+namespace StudentCRUD.Controllers
 {
     public class StudentController : Controller
     {
@@ -15,7 +14,7 @@ namespace StudentInformation.Controllers
             _repo = repo;
         }
 
-        // LIST PAGE
+        // INDEX
         public IActionResult Index()
         {
             try
@@ -25,50 +24,32 @@ namespace StudentInformation.Controllers
             }
             catch (Exception ex)
             {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                });
+                return View("Error", new ErrorViewModel { ErrorMessage = ex.Message, RequestId = HttpContext.TraceIdentifier });
             }
         }
-
-        // CREATE GET
         public IActionResult Create()
         {
             return View();
         }
 
-        // CREATE POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Student s)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    int status = _repo.AddStudent(s);
-
-                    if (status == -1)
-                    {
-                        ModelState.AddModelError("", "Email or Mobile number already exists!");
-                        return View(s);
-                    }
-
-                    return RedirectToAction("Index");
-                }
-
                 return View(s);
             }
-            catch (Exception ex)
+
+            int result = _repo.AddStudent(s);
+
+            if (result == -1)
             {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                });
+                ModelState.AddModelError("", "Email or Mobile already exists.");
+                return View(s);
             }
+
+            return RedirectToAction("Index");
         }
 
         // EDIT GET
@@ -77,18 +58,12 @@ namespace StudentInformation.Controllers
             try
             {
                 var student = _repo.GetStudentById(id);
-                if (student == null)
-                    return NotFound();
-
+                if (student == null) return NotFound();
                 return View(student);
             }
             catch (Exception ex)
             {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                });
+                return View("Error", new ErrorViewModel { ErrorMessage = ex.Message, RequestId = HttpContext.TraceIdentifier });
             }
         }
 
@@ -102,25 +77,18 @@ namespace StudentInformation.Controllers
                 if (ModelState.IsValid)
                 {
                     int status = _repo.UpdateStudent(s);
-
                     if (status == -1)
                     {
                         ModelState.AddModelError("", "Email or Mobile number already exists!");
                         return View(s);
                     }
-
                     return RedirectToAction("Index");
                 }
-
                 return View(s);
             }
             catch (Exception ex)
             {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorMessage = ex.Message,
-                    RequestId = HttpContext.TraceIdentifier
-                });
+                return View("Error", new ErrorViewModel { ErrorMessage = ex.Message, RequestId = HttpContext.TraceIdentifier });
             }
         }
 
@@ -128,14 +96,11 @@ namespace StudentInformation.Controllers
         public IActionResult Delete(int id)
         {
             var student = _repo.GetStudentById(id);
-            if (student == null)
-                return NotFound();
-
+            if (student == null) return NotFound();
             return View(student);
         }
 
-        // DELETE POST
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -143,13 +108,12 @@ namespace StudentInformation.Controllers
             return RedirectToAction("Index");
         }
 
+
         // DETAILS
         public IActionResult Details(int id)
         {
             var student = _repo.GetStudentById(id);
-            if (student == null)
-                return NotFound();
-
+            if (student == null) return NotFound();
             return View(student);
         }
 

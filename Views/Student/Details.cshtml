@@ -3,51 +3,17 @@
     ViewData["Title"] = "Student Details";
 }
 
-<h2 class="mb-4">Student Details</h2>
+<h2>Student Details</h2>
 
-<div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">@Model.Name</h5>
-    </div>
+<table class="table table-bordered">
+    <tr><th>Name</th><td>@Model.Name</td></tr>
+    <tr><th>Email</th><td>@Model.Email</td></tr>
+    <tr><th>Mobile</th><td>@Model.MobileNumber</td></tr>
+    <tr><th>State</th><td>@Model.State</td></tr>
+    <tr><th>Gender</th><td>@Model.Gender</td></tr>
+    <tr><th>Date of Birth</th><td>@Model.DateOfBirth.ToString("yyyy-MM-dd")</td></tr>
+</table>
 
-    <div class="card-body">
-
-        <table class="table table-bordered">
-            <tr>
-                <th width="25%">Id</th>
-                <td>@Model.Id</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>@Model.Name</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>@Model.Email</td>
-            </tr>
-            <tr>
-                <th>Mobile Number</th>
-                <td>@Model.MobileNumber</td>
-            </tr>
-            <tr>
-                <th>State</th>
-                <td>@Model.State</td>
-            </tr>
-            <tr>
-                <th>Gender</th>
-                <td>@Model.Gender</td>
-            </tr>
-            <tr>
-                <th>Date of Birth</th>
-                <td>@string.Format("{0:yyyy-MM-dd}", Model.DateOfBirth)</td>
-            </tr>
-
-        </table>
-
-    </div>
-
-    <div class="card-footer text-end">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </div>
-</div>
+<a class="btn btn-primary" href="@Url.Action("Index", "Student")">Back to List</a>
+<a class="btn btn-warning" href="@Url.Action("Edit", "Student", new { id = Model.Id })">Edit</a>
+<a class="btn btn-danger" href="@Url.Action("Delete", "Student", new { id = Model.Id })">Delete</a>

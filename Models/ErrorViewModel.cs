@@ -1,4 +1,4 @@
-namespace MVC_StudentInFormation.Models
+namespace StudentCRUD.Models
 {
     public class ErrorViewModel
     {

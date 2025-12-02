@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MVC_StudentInFormation.Models;
 using StudentCRUD.Models;
 using System.Diagnostics;
 

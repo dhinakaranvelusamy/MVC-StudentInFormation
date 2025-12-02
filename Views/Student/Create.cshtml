@@ -1,56 +1,66 @@
 ﻿@model StudentCRUD.Models.Student
 
-<h2>Add New Student</h2>
+@{
+    ViewData["Title"] = "Add Student";
+}
 
-<form method="post">
+<h2>Add Student</h2>
+
+<form asp-action="Create" method="post">
 
     <div class="mb-3">
-        <label>Name</label>
+        <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Email</label>
+        <label asp-for="Email" class="form-label"></label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Mobile Number</label>
+        <label asp-for="MobileNumber" class="form-label"></label>
         <input asp-for="MobileNumber" class="form-control" />
         <span asp-validation-for="MobileNumber" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>State</label>
-        <select asp-for="State" class="form-control">
+        <label asp-for="State" class="form-label"></label>
+        <select asp-for="State" class="form-select">
             <option value="">-- Select State --</option>
-            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="TamilNadu">TamilNadu</option>
             <option value="Kerala">Kerala</option>
             <option value="Karnataka">Karnataka</option>
-            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Goa">Goa</option>
+            <option value="Maharashtra">Maharashtra</option>
         </select>
         <span asp-validation-for="State" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Gender</label><br />
-        <label><input type="radio" asp-for="Gender" value="Male" /> Male</label>
-        <label class="ms-3"><input type="radio" asp-for="Gender" value="Female" /> Female</label>
+        <label class="form-label">Gender</label><br />
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Gender" value="Male" />   
+            <label class="form-check-label">Male</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Gender" value="Female" />
+            <label class="form-check-label">Female</label>
+        </div>
+
         <span asp-validation-for="Gender" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Date Of Birth</label>
-        <input asp-for="DateOfBirth" class="form-control" type="date" />
+        <label asp-for="DateOfBirth" class="form-label"></label>
+        <input asp-for="DateOfBirth" type="date" class="form-control" />
         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
     </div>
 
-    <button class="btn btn-success">Save</button>
-    <a href="/Student/Index" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-success">Save</button>
+    <a class="btn btn-secondary" href="/Student/Index">Cancel</a>
 </form>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

@@ -1,53 +1,117 @@
 ﻿@model IEnumerable<StudentCRUD.Models.Student>
-
 @{
-    ViewData["Title"] = "Student List";
+    ViewData["Title"] = "Students";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Student List</h2>
+<h2 class="mb-3">Students</h2>
 
-    <form asp-action="Search" method="post" class="d-flex">
-        <input type="text" name="name" class="form-control me-2" placeholder="Search by name..." />
-        <button type="submit" class="btn btn-outline-success">Search</button>
-    </form>
-
-    <a class="btn btn-primary ms-3" asp-action="Create">+ Add New Student</a>
+<div class="row mb-2">
+    <div class="col-md-8 text-end">
+        <a class="btn btn-success" href="@Url.Action("Create","Student")">Add Student</a>
+    </div>
 </div>
 
-<table class="table table-striped table-bordered table-hover">
-    <thead class="table-dark">
+<table id="studentTable" class="display nowrap table table-bordered" style="width:100%">
+    <thead>
         <tr>
-            <th style="width:5%;">ID</th>
-            <th style="width:25%;">Name</th>
-            <th style="width:25%;">Email</th>
-            <th style="width:15%;">Gender</th>
-            <th style="width:30%;">Actions</th>
+            <th>ID</th>       <!-- Column 0 -->
+            <th>Name</th>     <!-- Column 1 -->
+            <th>Email</th>    <!-- Column 2 -->
+            <th>Gender</th>   <!-- Column 3 -->
+            <th>Action</th>   <!-- Column 4 -->
+        </tr>
+
+        <!-- Filter Row -->
+        <tr id="filters">
+            <th></th>
+            <th>
+                <input type="text" placeholder="Search name" class="column-search form-control form-control-sm" />
+            </th>
+            <th>
+                <input type="text" placeholder="Search email" class="column-search form-control form-control-sm" />
+            </th>
+            <th>
+                <select class="column-search form-control form-control-sm">
+                    <option value="">All</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Any())
+        @foreach (var s in Model)
         {
-            foreach (var s in Model)
-            {
-                <tr>
-                    <td>@s.Id</td>
-                    <td>@s.Name</td>
-                    <td>@s.Email</td>
-                    <td>@s.Gender</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@s.Id" class="btn btn-info btn-sm me-1">Details</a>
-                        <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-warning btn-sm me-1">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@s.Id" class="btn btn-danger btn-sm">Delete</a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="5" class="text-center text-muted">No students found.</td>
-            </tr>
+        <tr>
+            <td>@s.Id</td>
+            <td>@s.Name</td>
+            <td>@s.Email</td>
+            <td>@s.Gender</td>
+            <td>
+                <a class="btn btn-sm btn-info" href="@Url.Action("Details","Student", new { id = s.Id })">Details</a>
+                <a class="btn btn-sm btn-warning" href="@Url.Action("Edit","Student", new { id = s.Id })">Edit</a>
+                <a class="btn btn-sm btn-danger" href="@Url.Action("Delete","Student", new { id = s.Id })">Delete</a>
+            </td>
+
+        </tr>
         }
     </tbody>
 </table>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<script>
+    (function ($) {
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#studentTable')) {
+                $('#studentTable').DataTable().destroy();
+            }
+
+            var table = $('#studentTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+
+                // ⬆⬆⬆ Sorting Rule (Ascending)
+                order: [
+                    [0, 'asc'], // ID ascending
+                    [1, 'asc'], // Name ascending
+                    [2, 'asc']  // Email ascending
+                ],
+
+                initComplete: function () {
+                    var api = this.api();
+
+                    api.columns().every(function (colIdx) {
+                        var column = this;
+                        var input = $('#filters th').eq(colIdx).find('.column-search');
+
+                        if (input.length) {
+                            input.on('keyup change', function () {
+                                column.search($(this).val()).draw();
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    })(jQuery);
+</script>
+
+<style>
+    #filters .column-search {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    table.dataTable tbody tr td {
+        vertical-align: middle;
+    }
+</style>

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Studentdata.Repo;
+using StudentCRUD.Repo; 
 
-namespace MVC_StudentInFormation
+namespace StudentCRUD 
 {
     public class Startup
     {
@@ -16,14 +16,13 @@ namespace MVC_StudentInFormation
 
         public IConfiguration Configuration { get; }
 
-        // Register services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddScoped<IStudentRepository, StudentRepository>();
         }
 
-        // Configure HTTP Request Pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -32,7 +31,8 @@ namespace MVC_StudentInFormation
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                // Redirect to Error page in production
+                app.UseExceptionHandler("/Student/Error");
                 app.UseHsts();
             }
 
