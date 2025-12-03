@@ -15,17 +15,20 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("Index", "Student")">StudentCRUD</a>
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">StudentCRUD</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Student")">Home</a>
+                        <a class="nav-link" href="@Url.Action("Privacy", "Home")">Privacy</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Create", "Student")">Add Student</a>
+                        <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Student")">Student List</a>
                     </li>
                 </ul>
             </div>

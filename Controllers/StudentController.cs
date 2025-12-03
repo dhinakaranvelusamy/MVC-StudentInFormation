@@ -24,47 +24,52 @@ namespace StudentCRUD.Controllers
             }
             catch (Exception ex)
             {
-                return View("Error", new ErrorViewModel { ErrorMessage = ex.Message, RequestId = HttpContext.TraceIdentifier });
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                    RequestId = HttpContext.TraceIdentifier
+                });
             }
         }
+
+        // CREATE GET
         public IActionResult Create()
         {
             return View();
         }
 
+        // CREATE POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Student s)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid) return View(s);
+
+                int result = _repo.AddStudent(s);
+
+                if (result == -1)
+                {
+                    ModelState.AddModelError("", "Email or Mobile Number already exists!");
+                    return View(s);
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
                 return View(s);
             }
-
-            int result = _repo.AddStudent(s);
-
-            if (result == -1)
-            {
-                ModelState.AddModelError("", "Email or Mobile already exists.");
-                return View(s);
-            }
-
-            return RedirectToAction("Index");
         }
 
         // EDIT GET
         public IActionResult Edit(int id)
         {
-            try
-            {
-                var student = _repo.GetStudentById(id);
-                if (student == null) return NotFound();
-                return View(student);
-            }
-            catch (Exception ex)
-            {
-                return View("Error", new ErrorViewModel { ErrorMessage = ex.Message, RequestId = HttpContext.TraceIdentifier });
-            }
+            var student = _repo.GetStudentById(id);
+            if (student == null) return NotFound();
+            return View(student);
         }
 
         // EDIT POST
@@ -74,21 +79,22 @@ namespace StudentCRUD.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid) return View(s);
+
+                int result = _repo.UpdateStudent(s);
+
+                if (result == -1)
                 {
-                    int status = _repo.UpdateStudent(s);
-                    if (status == -1)
-                    {
-                        ModelState.AddModelError("", "Email or Mobile number already exists!");
-                        return View(s);
-                    }
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("", "Email or Mobile Number already exists!");
+                    return View(s);
                 }
-                return View(s);
+
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                return View("Error", new ErrorViewModel { ErrorMessage = ex.Message, RequestId = HttpContext.TraceIdentifier });
+                ModelState.AddModelError("", ex.Message);
+                return View(s);
             }
         }
 
@@ -100,14 +106,25 @@ namespace StudentCRUD.Controllers
             return View(student);
         }
 
+        // DELETE POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            _repo.DeleteStudent(id);
-            return RedirectToAction("Index");
+            try
+            {
+                _repo.DeleteStudent(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                    RequestId = HttpContext.TraceIdentifier
+                });
+            }
         }
-
 
         // DETAILS
         public IActionResult Details(int id)
@@ -121,8 +138,19 @@ namespace StudentCRUD.Controllers
         [HttpPost]
         public IActionResult Search(string name)
         {
-            var results = _repo.SearchStudentByName(name);
-            return View("Index", results);
+            try
+            {
+                var results = _repo.SearchStudentByName(name);
+                return View("Index", results);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                    RequestId = HttpContext.TraceIdentifier
+                });
+            }
         }
     }
 }
