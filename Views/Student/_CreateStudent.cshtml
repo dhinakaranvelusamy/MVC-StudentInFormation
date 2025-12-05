@@ -1,0 +1,49 @@
+﻿@model StudentCRUD.Models.Student
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Add New Student</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <form asp-action="_Create" method="post">
+        <div class="modal-body">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="MobileNumber" class="form-label"></label>
+                <input asp-for="MobileNumber" class="form-control" />
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="State" class="form-label"></label>
+                <input asp-for="State" class="form-control" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Gender" class="form-label"></label><br />
+                <input type="radio" asp-for="Gender" value="Male" /> Male
+                <input type="radio" asp-for="Gender" value="Female" /> Female
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DateOfBirth" class="form-label"></label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

@@ -14,6 +14,8 @@ namespace StudentCRUD.Controllers
             _repo = repo;
         }
 
+
+        #region CRUD Operation
         // INDEX
         public IActionResult Index()
         {
@@ -152,5 +154,72 @@ namespace StudentCRUD.Controllers
                 });
             }
         }
+
+        #endregion
+
+        #region
+        // Dashboard page
+        public IActionResult Dashboard()
+        {
+            var students = _repo.GetAllStudents();
+            return View(students);
+        }
+
+        [HttpGet]
+        public IActionResult _Create()
+        {
+            return PartialView("_CreateStudent", new Student());
+        }
+
+        [HttpPost]
+        public IActionResult _Create(Student model)
+        {
+            if (ModelState.IsValid)
+            {
+                _repo.AddStudent(model);
+                return Json(new { success = true });
+            }
+            return PartialView("_CreateStudent", model);
+        }
+
+        [HttpGet]
+        public IActionResult _Edit(int id)
+        {
+            var student = _repo.GetStudentById(id);
+            return PartialView("_EditStudent", student);
+        }
+
+        [HttpPost]
+        public IActionResult _Edit(Student model)
+        {
+            if (ModelState.IsValid)
+            {
+                _repo.UpdateStudent(model);
+                return Json(new { success = true });
+            }
+            return PartialView("_EditStudent", model);
+        }
+
+        [HttpGet]
+        public IActionResult _Details(int id)
+        {
+            var student = _repo.GetStudentById(id);
+            return PartialView("_Details", student);
+        }
+
+        [HttpGet]
+        public IActionResult _Delete(int id)
+        {
+            var student = _repo.GetStudentById(id);
+            return PartialView("_DeleteStudent", student);
+        }
+
+        [HttpPost]
+        public IActionResult _DeleteConfirmed(int id)
+        {
+            _repo.DeleteStudent(id);
+            return Json(new { success = true });
+        }
     }
 }
+#endregion

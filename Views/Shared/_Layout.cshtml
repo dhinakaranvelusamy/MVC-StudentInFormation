@@ -4,14 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - StudentCRUD</title>
-<link rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
@@ -19,17 +26,11 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Privacy", "Home")">Privacy</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Student")">Student List</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Home")">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Dashboard", "Student")">Student List</a></li>
                 </ul>
             </div>
         </div>
@@ -40,17 +41,24 @@
         @RenderBody()
     </div>
 
+    <!-- Global Modal -->
+    <div class="modal fade" id="mainModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="modalBody"></div>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="text-center mt-5 mb-3">
+    <footer class="text-center mt-4 mb-3">
         <small>&copy; @DateTime.Now.Year StudentCRUD</small>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

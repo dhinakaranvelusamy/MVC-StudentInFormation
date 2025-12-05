@@ -1,0 +1,29 @@
+﻿@model IEnumerable<StudentCRUD.Models.Student>
+
+<table class="table table-striped table-bordered" id="studentTable">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>State</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Name</td>
+                <td>@s.Email</td>
+                <td>@s.MobileNumber</td>
+                <td>@s.State</td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="openModal('@Url.Action("_Edit","Student", new { id = s.Id })')">Edit</button>
+                    <button class="btn btn-info btn-sm" onclick="openModal('@Url.Action("_Details","Student", new { id = s.Id })')">Details</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('@Url.Action("_Delete","Student", new { id = s.Id })')">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

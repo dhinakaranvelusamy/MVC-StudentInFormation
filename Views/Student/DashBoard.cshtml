@@ -1,0 +1,62 @@
+﻿@model IEnumerable<StudentCRUD.Models.Student>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<button class="btn btn-primary mb-3" onclick="openModal('@Url.Action("_Create","Student")')">
+    Add Student
+</button>
+
+<div id="modalContainer"></div>
+
+<div id="studentTableContainer">
+    <partial name="_StudentTable" model="Model" />
+</div>
+
+
+<script>
+    // Open Bootstrap modal and load partial view
+    function openModal(url) {
+
+
+
+        $("#modalBody").html("<div class='p-5 text-center'>Loading...</div>");
+        $("#modalBody").load(url);
+        $("#mainModal").modal("show");
+    }
+
+    // AJAX form submit for create/edit/delete
+    $(document).on("submit", "form", function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr("action"),
+            method: form.attr("method"),
+            data: form.serialize(),
+            success: function (res) {
+                if (res.success) {
+                    $("#mainModal").modal("hide");
+                    location.reload(); // reload table
+                } else {
+                    $("#modalBody").html(res);
+                }
+            }
+        });
+    });
+
+    // Initialize DataTables
+    $(document).ready(function () {
+        $('table').DataTable({
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50],
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: -1 } // disable sorting on Actions column
+            ]
+        });
+    });
+</script>
